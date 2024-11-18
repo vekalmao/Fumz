@@ -15,6 +15,7 @@ import time
 from time import sleep
 import sys
 users_file = "users.txt"
+gradient_box = "\033[48;2;123;0;255m"
 MAX_ATTEMPTS = 3
 uname=input("Enter Custom Name:")
 os.system("cls" if os.name == "nt" else "clear")
@@ -306,12 +307,12 @@ def menu():
 
 
 def main():
-    menu()
-    while(True):
-        cnc = input(f"""
-\x1b[38;2;239;239;239m┏━━[\x1b[38;2;255;99;71m{uname}\x1b[38;2;239;239;239m] - [\x1b[38;2;255;234;0mDisco Botnet\x1b[38;2;239;239;239m]
-\x1b[38;2;239;239;239m┃
-\x1b[38;2;239;239;239m┗━━➤ """)
+    menu()  # Assuming this function is defined elsewhere
+    while True:
+        cnc = input(username_gradient + " ")
+        # Example gradient box and username gradient
+        gradient_box = "\033[48;2;123;0;255m"
+        username_gradient = f"{gradient_box}\033[38;2;0;0;0m {uname} \u25CF monkey ⯈⯈ \033[0m"
         if cnc == "METHODS" or cnc == "methods" or cnc == "Methods":
             meth()
         elif cnc == "CLEAR" or cnc == "clear" or cnc == "cls":
